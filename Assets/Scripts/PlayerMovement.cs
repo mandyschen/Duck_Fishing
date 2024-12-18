@@ -3,16 +3,50 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    private Vector2 movement;
+
+    private Rigidbody2D rb;
+    private Vector2 movementInput;
+
+    public GameManager gameManager;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+
+        // Auto-assign GameManager if not set in Inspector
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>();
+        }
+    }
 
     void Update()
     {
-        movement.x = Input.GetAxis("Horizontal"); // Left/Right Arrow or A/D
-        movement.y = Input.GetAxis("Vertical");   // Up/Down Arrow or W/S
+        // Input direction from arrow keys or WASD
+        movementInput.x = Input.GetAxisRaw("Horizontal");
+        movementInput.y = Input.GetAxisRaw("Vertical");
     }
 
     void FixedUpdate()
     {
-        // No movement because player stays centered
+        rb.velocity = movementInput.normalized * moveSpeed;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Fish"))
+        {
+            Debug.Log("Player: TOUCH FISH");
+            gameManager.SetNearFish(true, other.gameObject);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Fish"))
+        {
+            Debug.Log("Player: Left Fish");
+            gameManager.SetNearFish(false, null);
+        }
     }
 }
