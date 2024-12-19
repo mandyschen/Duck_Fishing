@@ -1,90 +1,66 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject gamePanel;
-    public TextMeshProUGUI scoreText;
-    public int targetScore = 2000;
-    public int initialScore = 1000;
+    public TextMeshProUGUI collectedFishText;
+    public TextMeshProUGUI coinsText;
+    public GameObject shopPanel;
+    public PlayerMovement playerMovement;
 
-    public FishManager fishManager;
+    private int collectedFish = 0;
+    private int coins = 0;
+    private int fishPrice = 10;
+    private int[] pricesList = { 0, 10, 20 };
 
-    private int score = 0;
-    private bool gameStarted = false;
-    private GameObject targetFish;
-    private bool nearFish = false;
-
-    void Update()
+    public void ChangeSprite(int index)
     {
-        if (nearFish && Input.GetKeyDown(KeyCode.Space) && !gameStarted)
+        if (coins >= pricesList[index])
         {
-            StartGame();
-            if (targetFish != null)
-            {
-                Destroy(targetFish);
-                fishManager.SpawnFish();
-                fishManager.DestroyFish();
-            }
-        }
-
-        if (gameStarted)
-        {
-            scoreText.text = "Score: " + score;
-
-            if (score >= targetScore)
-            {
-                EndGame(true);
-            }
-            else if (score <= 0)
-            {
-                EndGame(false);
-            }
-        }
-    }
-
-    public void SetNearFish(bool isNear, GameObject fish)
-    {
-        nearFish = isNear;
-        targetFish = fish;
-    }
-
-    void StartGame()
-    {
-        gameStarted = true;
-        gamePanel.SetActive(true);
-        score = initialScore;
-        Debug.Log("Game Started");
-    }
-
-    void EndGame(bool success)
-    {
-        gameStarted = false;
-        gamePanel.SetActive(false);
-
-        if (success)
-        {
-            Debug.Log("Game Won!");
+            playerMovement.ChangeSprite(index);
+            coins -= pricesList[index];
+            coinsText.text = "Coins: " + coins;
+            pricesList[index] = 0;
         }
         else
         {
-            Debug.Log("Game Lost!");
+            Debug.Log("Not enough coins");
         }
     }
 
-    public void IncreaseScore()
+    public void ShowShopPanel()
     {
-        if (gameStarted)
-        {
-            score++;
-        }
+        shopPanel.SetActive(true);
     }
 
-    public void DecreaseScore()
+    public void HideShopPanel()
     {
-        if (gameStarted && score > 0)
-        {
-            score--;
-        }
+        shopPanel.SetActive(false);
+    }
+
+    public void IncrementFish()
+    {
+        collectedFish++;
+        collectedFishText.text = "Fish: " + collectedFish;
+    }
+
+    public void SellFish()
+    {
+        coins += collectedFish * fishPrice;
+        coinsText.text = "Coins: " + coins;
+        collectedFish = 0;
+        collectedFishText.text = "Fish: " + collectedFish;
+    }
+
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        
     }
 }

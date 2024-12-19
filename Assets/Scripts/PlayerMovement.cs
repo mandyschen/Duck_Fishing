@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,11 +7,29 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movementInput;
 
-    public GameManager gameManager;
+    public FishGameManager gameManager;
     public SpriteRenderer background;
 
     private Vector2 backgroundMinBounds;
     private Vector2 backgroundMaxBounds;
+
+    public SpriteRenderer playerSprite;
+    public Sprite[] availableSprites;
+    private int currSpriteIndex = 0;
+
+    public void ChangeSprite(int index)
+    {
+        if (index >= 0 && index < availableSprites.Length)
+        {
+            playerSprite.sprite = availableSprites[index];
+            playerSprite.sortingOrder = 1;
+            currSpriteIndex = index; // Update the index to track the currently selected sprite
+        }
+        else
+        {
+            Debug.LogError("Invalid sprite index!");
+        }
+    }
 
     void Start()
     {
@@ -18,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (gameManager == null)
         {
-            gameManager = FindObjectOfType<GameManager>();
+            gameManager = FindObjectOfType<FishGameManager>();
         }
 
         // Calculate the bounds of the background sprite in world space

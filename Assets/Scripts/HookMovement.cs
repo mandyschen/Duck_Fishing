@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HookMovement : MonoBehaviour
 {
-    public GameManager gameManager;
+    public FishGameManager gameManager;
     public float gravity = 300f;
     public float jumpForce = 500f;
     private RectTransform rectTransform;
