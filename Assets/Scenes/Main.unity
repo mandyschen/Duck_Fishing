@@ -831,6 +831,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2aba9daed356447cd8503bc145476081, type: 3}
   - {fileID: 21300000, guid: 4ca304c8214d34701a02c27e67e2bbc0, type: 3}
   - {fileID: 21300000, guid: 70356341e754e474bad9726b8ca3b2f4, type: 3}
+  pricesList: 000000000a00000014000000
 --- !u!1 &386097780
 GameObject:
   m_ObjectHideFlags: 0

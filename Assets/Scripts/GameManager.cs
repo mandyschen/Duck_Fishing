@@ -13,16 +13,16 @@ public class GameManager : MonoBehaviour
     private int collectedFish = 0;
     private int coins = 0;
     private int fishPrice = 10;
-    private int[] pricesList = { 0, 10, 20 };
 
     public void ChangeSprite(int index)
     {
-        if (coins >= pricesList[index])
+        int cost = playerMovement.ChangeSprite(index);
+        if (coins >= cost)
         {
-            playerMovement.ChangeSprite(index);
-            coins -= pricesList[index];
+            
+            coins -= cost;
             coinsText.text = "Coins: " + coins;
-            pricesList[index] = 0;
+            playerMovement.ZeroPrice(index);
         }
         else
         {
