@@ -18,20 +18,31 @@ public class PlayerMovement : MonoBehaviour
     public int[] pricesList;
     private int currSpriteIndex = 0;
 
-    public int ChangeSprite(int index)
+    public int GetPrice(int index)
+    {
+        if (index >= 0 && index < availableSprites.Length)
+        {
+            return pricesList[index];
+        }
+        else
+        {
+            Debug.LogError("Invalid index!");
+        }
+        return 0;
+    }
+
+    public void ChangeSprite(int index)
     {
         if (index >= 0 && index < availableSprites.Length)
         {
             playerSprite.sprite = availableSprites[index];
             playerSprite.sortingOrder = 1;
             currSpriteIndex = index;
-            return pricesList[index];
         }
         else
         {
             Debug.LogError("Invalid sprite index!");
         }
-        return 0;
     }
 
     public void ZeroPrice(int index)

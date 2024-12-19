@@ -55,7 +55,6 @@ public class FishGameManager : MonoBehaviour
         gameStarted = true;
         gamePanel.SetActive(true);
         score = initialScore;
-        Debug.Log("Game Started");
     }
 
     void EndGame(bool success)

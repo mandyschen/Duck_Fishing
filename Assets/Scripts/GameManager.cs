@@ -16,10 +16,10 @@ public class GameManager : MonoBehaviour
 
     public void ChangeSprite(int index)
     {
-        int cost = playerMovement.ChangeSprite(index);
+        int cost = playerMovement.GetPrice(index);
         if (coins >= cost)
         {
-            
+            playerMovement.ChangeSprite(index);
             coins -= cost;
             coinsText.text = "Coins: " + coins;
             playerMovement.ZeroPrice(index);
