@@ -8,7 +8,7 @@ public class FishManager : MonoBehaviour
     public float spawnRangeX = 7.5f;
     public float spawnRangeY = 4.5f;
     public float minDistanceBetweenFish = 1.5f;
-    public Camera mainCamera;
+    public SpriteRenderer background;
 
     private List<GameObject> activeFish = new List<GameObject>();
 
@@ -47,11 +47,22 @@ public class FishManager : MonoBehaviour
 
     Vector3 GetRandomSpawnPosition()
     {
-        float camX = mainCamera.transform.position.x;
-        float camY = mainCamera.transform.position.y;
+        Bounds bounds = background.bounds;
 
-        float randomX = Random.Range(camX - spawnRangeX, camX + spawnRangeX);
-        float randomY = Random.Range(camY - spawnRangeY, camY + spawnRangeY);
+        Vector3 fishSize = Vector3.zero;
+        if (fishPrefab.TryGetComponent<SpriteRenderer>(out SpriteRenderer fishRenderer))
+        {
+            fishSize = fishRenderer.bounds.size;
+        }
+
+        float spawnMinX = bounds.min.x + fishSize.x / 2;
+        float spawnMaxX = bounds.max.x - fishSize.x / 2;
+
+        float spawnMinY = bounds.min.y + fishSize.y / 2;
+        float spawnMaxY = bounds.max.y - fishSize.y / 2;
+
+        float randomX = Random.Range(spawnMinX, spawnMaxX);
+        float randomY = Random.Range(spawnMinY, spawnMaxY);
 
         return new Vector3(randomX, randomY, 0f);
     }

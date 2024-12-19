@@ -3,40 +3,62 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-
     private Rigidbody2D rb;
     private Vector2 movementInput;
 
     public GameManager gameManager;
+    public SpriteRenderer background;
+
+    private Vector2 backgroundMinBounds;
+    private Vector2 backgroundMaxBounds;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // Auto-assign GameManager if not set in Inspector
         if (gameManager == null)
         {
             gameManager = FindObjectOfType<GameManager>();
+        }
+
+        // Calculate the bounds of the background sprite in world space
+        if (background != null)
+        {
+            Vector3 minBounds = background.bounds.min;
+            Vector3 maxBounds = background.bounds.max;
+            backgroundMinBounds = new Vector2(minBounds.x, minBounds.y);
+            backgroundMaxBounds = new Vector2(maxBounds.x, maxBounds.y);
+        }
+        else
+        {
+            Debug.LogWarning("Background SpriteRenderer is not assigned!");
         }
     }
 
     void Update()
     {
-        // Input direction from arrow keys or WASD
+        // Get input direction from arrow keys or WASD
         movementInput.x = Input.GetAxisRaw("Horizontal");
         movementInput.y = Input.GetAxisRaw("Vertical");
     }
 
     void FixedUpdate()
     {
-        rb.velocity = movementInput.normalized * moveSpeed;
+        // Calculate the target position
+        Vector3 targetPosition = rb.position + (Vector2)(movementInput.normalized * moveSpeed * Time.fixedDeltaTime);
+
+        // Clamp the position within the background bounds
+        targetPosition.x = Mathf.Clamp(targetPosition.x, backgroundMinBounds.x, backgroundMaxBounds.x);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, backgroundMinBounds.y, backgroundMaxBounds.y);
+
+        // Update the player's position
+        rb.MovePosition(targetPosition);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Fish"))
         {
-            Debug.Log("Player: TOUCH FISH");
             gameManager.SetNearFish(true, other.gameObject);
         }
     }
@@ -45,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Fish"))
         {
-            Debug.Log("Player: Left Fish");
             gameManager.SetNearFish(false, null);
         }
     }
