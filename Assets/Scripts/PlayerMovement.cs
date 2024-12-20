@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Invalid index!");
+            Debug.Log("Invalid index!");
         }
         return 0;
     }
@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Invalid sprite index!");
+            Debug.Log("Invalid sprite index!");
         }
     }
 

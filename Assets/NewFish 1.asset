@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewFish 1
   m_EditorClassIdentifier: 
   fishName: Common
-  fishSprite: {fileID: 21300000, guid: a2ebc32ee0b3c424abffc029066105a1, type: 3}
+  fishSprite: {fileID: -441822191, guid: cb82e402b9f8048e7bbf95414261597e, type: 3}
   price: 10
   difficulty: 1
   rarity: 10

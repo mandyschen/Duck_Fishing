@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewFish 3
   m_EditorClassIdentifier: 
   fishName: Legendary
-  fishSprite: {fileID: 21300000, guid: b8407f189781448bca8758e34515ff19, type: 3}
+  fishSprite: {fileID: -1787983159, guid: cb82e402b9f8048e7bbf95414261597e, type: 3}
   price: 100
   difficulty: 3
   rarity: 30

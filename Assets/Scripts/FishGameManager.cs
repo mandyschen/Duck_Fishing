@@ -6,6 +6,7 @@ public class FishGameManager : MonoBehaviour
 {
     public GameObject gamePanel;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI directionText;
     public int targetScore = 2000;
     public int initialScore = 1000;
 
@@ -46,7 +47,7 @@ public class FishGameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("You have too many fish! Sell first.");
+                directionText.text = "You have too many fish! Sell first.";
                 return false;
             }
         }
@@ -118,11 +119,12 @@ public class FishGameManager : MonoBehaviour
             {
                 gameManager.IncrementFish(targetFish);
             }
+            directionText.text = "Game won!";
 
         }
         else
         {
-            Debug.Log("Game Lost!");
+            directionText.text = "Game lost!";
             
         }
         Destroy(targetFish.transform.root.gameObject);
