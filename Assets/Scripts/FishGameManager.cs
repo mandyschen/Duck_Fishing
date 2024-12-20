@@ -11,6 +11,10 @@ public class FishGameManager : MonoBehaviour
 
     public FishManager fishManager;
     public GameManager gameManager;
+    public TargetBoxMovement targetBoxMovement;
+    public float commonSpeed = 200f;
+    public float rareSpeed = 500f;
+    public float legendarySpeed = 1000f;
 
     private int score = 0;
     private bool gameStarted = false;
@@ -89,6 +93,17 @@ public class FishGameManager : MonoBehaviour
         gameStarted = true;
         gamePanel.SetActive(true);
         score = initialScore;
+        if(targetFish.fishData.difficulty == 1)
+        {
+            targetBoxMovement.speed = commonSpeed;
+        }
+        else if(targetFish.fishData.difficulty == 2)
+        {
+            targetBoxMovement.speed = rareSpeed;
+        }
+        else{
+            targetBoxMovement.speed = legendarySpeed;
+        }
     }
 
     void EndGame(bool success)

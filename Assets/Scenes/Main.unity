@@ -850,7 +850,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 2aba9daed356447cd8503bc145476081, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1229,7 +1229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &600512170
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1247,10 +1247,10 @@ RectTransform:
   - {fileID: 797225722}
   m_Father: {fileID: 1880298425}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 473.66125, y: -24.282227}
-  m_SizeDelta: {x: -1780.162, y: -686.275}
+  m_AnchorMin: {x: 0.7463958, y: 0.5}
+  m_AnchorMax: {x: 0.7463958, y: 0.5}
+  m_AnchoredPosition: {x: 0.6612549, y: -24.282227}
+  m_SizeDelta: {x: 139.83801, y: 903.725}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &600512171
 MonoBehaviour:
@@ -1692,7 +1692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4001906f677446098e6fb21b3ead32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 400
+  speed: 200
 --- !u!114 &798238720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2094,6 +2094,10 @@ MonoBehaviour:
   initialScore: 25
   fishManager: {fileID: 1675309176}
   gameManager: {fileID: 2083561980}
+  targetBoxMovement: {fileID: 798238719}
+  commonSpeed: 200
+  rareSpeed: 500
+  legendarySpeed: 1000
   fishUIImage:
   - {fileID: 677878243}
   - {fileID: 1317520509}
@@ -3393,7 +3397,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.6613464, y: 445.282}
+  m_AnchoredPosition: {x: 2, y: 530}
   m_SizeDelta: {x: 200, y: 44.492}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1758200182

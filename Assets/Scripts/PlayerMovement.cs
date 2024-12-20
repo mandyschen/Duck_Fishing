@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
         if (index >= 0 && index < availableSprites.Length)
         {
             playerSprite.sprite = availableSprites[index];
-            playerSprite.sortingOrder = 1;
+            playerSprite.sortingOrder = 2;
             currSpriteIndex = index;
         }
         else

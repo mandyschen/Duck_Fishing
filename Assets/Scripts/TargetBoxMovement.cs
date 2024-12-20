@@ -22,6 +22,7 @@ public class TargetBoxMovement : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Speed: " + speed);
         rectTransform.anchoredPosition += new Vector2(0, direction * speed * Time.deltaTime);
 
         randomChangeTimer += Time.deltaTime;
