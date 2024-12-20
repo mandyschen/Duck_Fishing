@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class FishGameManager : MonoBehaviour
 {
@@ -13,8 +14,40 @@ public class FishGameManager : MonoBehaviour
 
     private int score = 0;
     private bool gameStarted = false;
-    private GameObject targetFish;
+    private Fish targetFish;
     private bool nearFish = false;
+
+    public Image[] fishUIImage;
+    public Image emptySlot;
+    public Canvas uiCanvas;
+
+    public void SellFish()
+    {
+        foreach (Image im in fishUIImage)
+        {
+            im.sprite = emptySlot.sprite;
+        }
+    }
+
+    bool MoveFishToUI(int index)
+    {
+        if (targetFish != null && fishUIImage != null)
+        {
+            SpriteRenderer fishSpriteRenderer = targetFish.GetComponent<SpriteRenderer>();
+            
+            if (index < fishUIImage.Length)
+            {
+                fishUIImage[index].sprite = fishSpriteRenderer.sprite;
+                return true;
+            }
+            else
+            {
+                Debug.Log("You have too many fish! Sell first.");
+                return false;
+            }
+        }
+        return false;
+    }
 
     void Update()
     {
@@ -23,7 +56,8 @@ public class FishGameManager : MonoBehaviour
             StartGame();
             if (targetFish != null)
             {
-                Destroy(targetFish);
+                // Destroy(targetFish.transform.root.gameObject);
+                // MoveFishToUI();
                 fishManager.SpawnFish();
                 fishManager.DestroyFish();
             }
@@ -44,7 +78,7 @@ public class FishGameManager : MonoBehaviour
         }
     }
 
-    public void SetNearFish(bool isNear, GameObject fish)
+    public void SetNearFish(bool isNear, Fish fish)
     {
         nearFish = isNear;
         targetFish = fish;
@@ -64,13 +98,19 @@ public class FishGameManager : MonoBehaviour
 
         if (success)
         {
-            Debug.Log("Game Won!");
-            gameManager.IncrementFish();
+            int index = gameManager.GetCollectedFish();
+            if(MoveFishToUI(index))
+            {
+                gameManager.IncrementFish(targetFish);
+            }
+
         }
         else
         {
             Debug.Log("Game Lost!");
+            
         }
+        Destroy(targetFish.transform.root.gameObject);
     }
 
     public void IncreaseScore()

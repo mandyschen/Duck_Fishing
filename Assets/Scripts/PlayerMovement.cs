@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     public FishGameManager gameManager;
     public SpriteRenderer background;
+    public GameObject fishGamePanel;
 
     private Vector2 backgroundMinBounds;
     private Vector2 backgroundMaxBounds;
@@ -59,45 +60,48 @@ public class PlayerMovement : MonoBehaviour
             gameManager = FindObjectOfType<FishGameManager>();
         }
 
-        // Calculate the bounds of the background sprite in world space
-        if (background != null)
-        {
-            Vector3 minBounds = background.bounds.min;
-            Vector3 maxBounds = background.bounds.max;
-            backgroundMinBounds = new Vector2(minBounds.x, minBounds.y);
-            backgroundMaxBounds = new Vector2(maxBounds.x, maxBounds.y);
-        }
-        else
-        {
-            Debug.LogWarning("Background SpriteRenderer is not assigned!");
-        }
+        Vector3 minBounds = background.bounds.min;
+        Vector3 maxBounds = background.bounds.max;
+        backgroundMinBounds = new Vector2(minBounds.x, minBounds.y);
+        backgroundMaxBounds = new Vector2(maxBounds.x, maxBounds.y);
     }
 
     void Update()
     {
-        // Get input direction from arrow keys or WASD
-        movementInput.x = Input.GetAxisRaw("Horizontal");
-        movementInput.y = Input.GetAxisRaw("Vertical");
+        if (fishGamePanel == null || !fishGamePanel.activeSelf)
+        {
+            movementInput.x = Input.GetAxisRaw("Horizontal");
+            movementInput.y = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            movementInput = Vector2.zero;
+        }
     }
 
     void FixedUpdate()
     {
-        // Calculate the target position
-        Vector3 targetPosition = rb.position + (Vector2)(movementInput.normalized * moveSpeed * Time.fixedDeltaTime);
+        if (movementInput != Vector2.zero)
+        {
+            Vector3 targetPosition = rb.position + (Vector2)(movementInput.normalized * moveSpeed * Time.fixedDeltaTime);
 
-        // Clamp the position within the background bounds
-        targetPosition.x = Mathf.Clamp(targetPosition.x, backgroundMinBounds.x, backgroundMaxBounds.x);
-        targetPosition.y = Mathf.Clamp(targetPosition.y, backgroundMinBounds.y, backgroundMaxBounds.y);
+            targetPosition.x = Mathf.Clamp(targetPosition.x, backgroundMinBounds.x, backgroundMaxBounds.x);
+            targetPosition.y = Mathf.Clamp(targetPosition.y, backgroundMinBounds.y, backgroundMaxBounds.y);
 
-        // Update the player's position
-        rb.MovePosition(targetPosition);
+            rb.MovePosition(targetPosition);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Fish"))
         {
-            gameManager.SetNearFish(true, other.gameObject);
+            Debug.Log("Enter fish.");
+            Fish fishComponent = other.GetComponent<Fish>();
+            if (fishComponent != null)
+            {
+                gameManager.SetNearFish(true, fishComponent);
+            }
         }
     }
 
@@ -105,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Fish"))
         {
+            Debug.Log("Exit fish.");
             gameManager.SetNearFish(false, null);
         }
     }

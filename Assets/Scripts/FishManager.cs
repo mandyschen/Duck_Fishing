@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class FishManager : MonoBehaviour
 {
+    public FishPool fishPool;
     public GameObject fishPrefab;
     public int numberOfFish = 3;
     public float spawnRangeX = 7.5f;
@@ -27,6 +29,9 @@ public class FishManager : MonoBehaviour
 
     public void SpawnFish()
     {
+        int rarityLevel = UnityEngine.Random.Range(0, 11); // Determine rarity (0-5 = common, 6-9 = rare, 10 = legendary)
+        FishData randomFish = fishPool.GetRandomFish(rarityLevel);
+
         Vector3 spawnPosition = GetRandomSpawnPosition();
 
         while (!IsValidPosition(spawnPosition))
@@ -34,10 +39,21 @@ public class FishManager : MonoBehaviour
             spawnPosition = GetRandomSpawnPosition();
         }
 
-        GameObject newFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity);
-        newFish.SetActive(true);
+        if (randomFish != null)
+        {
+            GameObject newFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity);
+            newFish.GetComponent<SpriteRenderer>().sprite = randomFish.fishSprite;
+            newFish.GetComponent<Fish>().Setup(randomFish);
+            newFish.SetActive(true);
+            activeFish.Add(newFish);
 
-        activeFish.Add(newFish);
+            SpriteRenderer fishRenderer = newFish.GetComponent<SpriteRenderer>();
+            if (fishRenderer != null)
+            {
+                fishRenderer.sprite = randomFish.fishSprite;
+                fishRenderer.sortingOrder = 1;
+            }
+        }
     }
 
     public void DestroyFish()
@@ -61,8 +77,8 @@ public class FishManager : MonoBehaviour
         float spawnMinY = bounds.min.y + fishSize.y / 2;
         float spawnMaxY = bounds.max.y - fishSize.y / 2;
 
-        float randomX = Random.Range(spawnMinX, spawnMaxX);
-        float randomY = Random.Range(spawnMinY, spawnMaxY);
+        float randomX = UnityEngine.Random.Range(spawnMinX, spawnMaxX);
+        float randomY = UnityEngine.Random.Range(spawnMinY, spawnMaxY);
 
         return new Vector3(randomX, randomY, 0f);
     }
